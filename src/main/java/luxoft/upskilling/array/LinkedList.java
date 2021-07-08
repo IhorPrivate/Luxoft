@@ -15,21 +15,13 @@ public class LinkedList implements List{
 
     @Override
     public void add(Object value) {
-        Node temp = head;
-        Node node = new Node(value);
-        if (size() != 0){
-            head = node;
-        }
-        while (temp.next != null){
-            temp = temp.next;
-        }
-        temp.next = node;
+        add(value, 0);
     }
 
     @Override
     public void add(Object value, int index) {
         Node temp = head;
-        if (index < 0 || index > size()) throw new IndexOutOfBoundsException();
+        if (index < 0 || index > size()) throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
         Node node = new Node(value);
 
         if (size() == 0){

@@ -19,7 +19,7 @@ class ArrayList implements List {
 
     @Override
     public void add(Object value) {
-        data[size()] = value;
+        add(value, 0);
     }
 
     @Override
@@ -37,7 +37,7 @@ class ArrayList implements List {
 
     @Override
     public Object remove(int index) {
-        if(index < 0 || index > size()) throw new IndexOutOfBoundsException();
+        if(index < 0 || index > size() - 1) throw new IndexOutOfBoundsException();
         Object[] result = new Object[size()-1];
         System.arraycopy(data, 0, result, 0, index);
         if (size() - 1 >= 0)
@@ -95,7 +95,10 @@ class ArrayList implements List {
     public int indexOf(Object value) {
         int res = -1;
         for (int i = 0; i < size(); i++){
-            if(data[i].equals(value)) res = i;
+            if(data[i].equals(value)){
+                res = i;
+                break;
+            }
         }
         return res;
     }

@@ -1,69 +1,74 @@
-package luxoft.upskilling.array;
+package com.bibichkov.datastructures;
 
 public class LinkedList implements List{
 
     Node head;
 
-    static class Node{
-        Object data;
-        Node next;
 
-        Node(Object d) {data = d; next = null;}
-    }
 
-    LinkedList(){}
+    public LinkedList(){}
 
     @Override
     public void add(Object value) {
-        add(value, 0);
+        add(value, size()-1);
     }
 
     @Override
     public void add(Object value, int index) {
-        Node temp = head;
-        if (index < 0 || index > size()) throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
+        if (index < 0 || index > size())
+            throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
         Node node = new Node(value);
 
-        if (size() == 0){
+        if (head == null){
             head = node;
         }
+        Node temp = head;
 
-        if(index == 0){
-            node.next = head;
-            head = node;
-            return;
-        }
+        int counter = 0;
 
-        for (int i = 0; i < index; i++){
+        while (temp != null || counter != index){
             temp = temp.next;
+            counter++;
         }
-        temp.next = node;
+
+
+
+
     }
 
     @Override
     public Object remove(int index) {
-        if (index < 0 || index > size()) throw new IndexOutOfBoundsException();
-        if (size() == 0) throw new NullPointerException();
-        if(index == 0){ head = head.next; return head.data; }
-        Node temp = head, prev = null;
+        if (index < 0 || index > size())
+            throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
+        if (size() == 0) throw new NullPointerException("Array is empty");
+
+        if (index == 0){
+            head = head.next;
+            return head.data;
+        }
+
+        Node temp = head;
 
         int counter = 0;
-        while (temp != null && counter != index){
-            prev = temp;
-            counter++;
+        while (temp.next != null || counter != index){
             temp = temp.next;
+            counter++;
         }
+
+        if (temp.next == null)
+
+
+
         if (temp == null){
             return -1;
         }
-        prev.next = temp.next;
         return temp.data;
     }
 
     @Override
     public Object get(int index) {
-        if (index < 0 || index > size()) throw new IndexOutOfBoundsException();
-        if (size() == 0) throw new NullPointerException();
+        if (index < 0 || index > size()) throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
+        if (size() == 0) throw new NullPointerException("Array is empty");
         if(index == 0){ return head.data; }
         Node temp = head;
 
@@ -82,8 +87,9 @@ public class LinkedList implements List{
 
     @Override
     public Object set(Object value, int index) {
-        if (index < 0 || index > size()) throw new IndexOutOfBoundsException();
-        if (size() == 0) throw new NullPointerException();
+        if (index < 0 || index > size())
+            throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
+        if (size() == 0) throw new NullPointerException("Array is empty");
         if(index == 0){
             head.data = value;
             return head.data;
@@ -166,5 +172,17 @@ public class LinkedList implements List{
             }
         }
         return pos;
+    }
+
+    private static class Node{
+        private Object data;
+        private Node next;
+        private Node prev;
+
+        Node(Object d) {
+            data = d;
+            next = null;
+            prev = null;
+        }
     }
 }

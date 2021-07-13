@@ -1,4 +1,4 @@
-package luxoft.upskilling;
+package com.bibichkov;
 
 public class Main {
 

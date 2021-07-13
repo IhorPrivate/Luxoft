@@ -1,4 +1,4 @@
-package luxoft.upskilling.array;
+package com.bibichkov.datastructures;
 
 public interface List {
     void add(Object value);

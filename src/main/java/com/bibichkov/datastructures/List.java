@@ -1,16 +1,16 @@
 package com.bibichkov.datastructures;
 
-public interface List {
-    void add(Object value);
-    void add(Object value, int index);
-    Object remove(int index);
+public interface List<E> extends Iterable<E>{
+    void add(E value);
+    void add(E value, int index);
+    E remove(int index);
     Object get(int index);
-    Object set(Object value, int index);
+    Object set(E value, int index);
     void clear();
     int size();
     boolean isEmpty();
-    boolean contains(Object value);
-    int indexOf(Object value);
-    int lastIndexOf(Object value);
+    boolean contains(E value);
+    int indexOf(E value);
+    int lastIndexOf(E value);
     String toString();
 }

@@ -1,45 +1,60 @@
 package com.bibichkov.datastructures;
 
-public class LinkedList implements List{
+import javax.annotation.Nonnull;
+import java.util.Iterator;
+import java.util.StringJoiner;
 
-    Node head;
+public class LinkedList<E> implements List<E>{
 
+    private Node<E> head;
+
+    private Node<E> tail;
+
+    private int size;
 
 
     public LinkedList(){}
 
     @Override
-    public void add(Object value) {
+    public void add(E value) {
         add(value, size()-1);
     }
 
     @Override
-    public void add(Object value, int index) {
-        if (index < 0 || index > size())
-            throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
-        Node node = new Node(value);
+    public void add(E value, int index) {
+        checkIndexForNewData(index);
+        if (index == size){
+            final Node<E> last = tail;
+            Node
+            tail =
+        }
+
+        if(tail == null){
+            head =
+        }
+
 
         if (head == null){
             head = node;
         }
-        Node temp = head;
+        Node<E> temp = head;
 
         int counter = 0;
 
-        while (temp != null || counter != index){
+        while (temp != null && counter != index){
             temp = temp.next;
             counter++;
         }
 
-
-
-
     }
 
+
+
+
+
     @Override
-    public Object remove(int index) {
-        if (index < 0 || index > size())
-            throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
+    public E remove(int index) {
+        checkIndexForExistedData(index, size);
         if (size() == 0) throw new NullPointerException("Array is empty");
 
         if (index == 0){
@@ -55,26 +70,29 @@ public class LinkedList implements List{
             counter++;
         }
 
-        if (temp.next == null)
+        //if (temp.next == null)
 
 
-
-        if (temp == null){
-            return -1;
-        }
-        return temp.data;
+//
+//        if (temp == null){
+//            return -1;
+//        }
+//        return temp.data;
+            return null;
     }
 
     @Override
-    public Object get(int index) {
-        if (index < 0 || index > size()) throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
-        if (size() == 0) throw new NullPointerException("Array is empty");
-        if(index == 0){ return head.data; }
-        Node temp = head;
+    public E get(int index) {
+        checkIndexForExistedData(index, size);
+        if (size == 0){
+            throw new NullPointerException("Array is empty");
+        }
 
-        int counter = 0;
-        while (temp != null && counter != index){
-            counter++;
+        if(index == 0){ return head.data; }
+        Node<E> temp = head;
+
+        while (temp != null){
+            if()
             temp = temp.next;
         }
 
@@ -87,9 +105,8 @@ public class LinkedList implements List{
 
     @Override
     public Object set(Object value, int index) {
-        if (index < 0 || index > size())
-            throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
-        if (size() == 0) throw new NullPointerException("Array is empty");
+        checkIndexForExistedData(index, size);
+        if (size == 0) throw new NullPointerException("Array is empty");
         if(index == 0){
             head.data = value;
             return head.data;
@@ -109,6 +126,16 @@ public class LinkedList implements List{
 
         temp.data = value;
         return temp.data;
+    }
+
+    private void checkIndexForExistedData(int index) {
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size));
+    }
+
+    private void checkIndexForNewData(int index) {
+        if (index <= 0 || index > size)
+            throw new IndexOutOfBoundsException(String.format("Index should be between 1 to %2d", size));
     }
 
     @Override
@@ -174,15 +201,53 @@ public class LinkedList implements List{
         return pos;
     }
 
-    private static class Node{
-        private Object data;
-        private Node next;
-        private Node prev;
+    @Override
+    public String toString() {
+        Node temp = head;
+        StringJoiner stringJoiner = new StringJoiner(",", "[","]");
+        while (temp){
+            stringJoiner.add(data.toString());
+        }
+        return stringJoiner.toString();
+    }
 
-        Node(Object d) {
+
+    @Override
+    @Nonnull
+    public Iterator<E> iterator() {
+        return new Iterator<>() {
+
+            Node<E> current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public E next() {
+                E result = current.data;
+                current = current.next;
+                return result;
+            }
+        };
+    }
+
+    private void linkLast(E e){
+        final Node<E> l = tail;
+
+
+    }
+
+    private static class Node<E>{
+        private E data;
+        private final Node<E> next;
+        private final Node<E> prev;
+
+        Node(Node<E> prev, E d, Node<E> next) {
             data = d;
-            next = null;
-            prev = null;
+            this.next = next;
+            this.prev = prev;
         }
     }
 }

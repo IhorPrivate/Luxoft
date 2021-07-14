@@ -2,9 +2,12 @@ package com.bibichkov.datastructures;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.StringJoiner;
 
-public class ArrayList implements List {
+public class ArrayList<E> implements List<E> {
 
     private static final int DEFAULT_SIZE = 5;
 
@@ -15,18 +18,18 @@ public class ArrayList implements List {
         this(DEFAULT_SIZE);
     }
 
-    public ArrayList(int index) {
-        checkIndex(index, size);
-        arrData = new Object[index];
+    public ArrayList(int capacity) {
+        checkIndex(capacity, size);
+        arrData =  new Object[capacity];
     }
 
     @Override
-    public void add(Object value) {
+    public void add(E value) {
         add(value, size);
     }
 
     @Override
-    public void add(Object newElement, int index) {
+    public void add(E newElement, int index) {
         checkIndex(index, size);
         Object[] newArr = new Object[size + 1];
         if (size >= 0) {
@@ -42,10 +45,12 @@ public class ArrayList implements List {
     }
 
 
+    // There is an only way to cast raw type to generic one, which is used in @java.utils.ArrayList too
+    // The risk of inconsistency data in this case is minimum
     @Override
-    public Object remove(int index) {
+    public E remove(int index) {
         checkIndex(index, size -1);
-        Object value = arrData[index];
+        @SuppressWarnings("unchecked") E value = (E)arrData[index];
         if (size - 1 - index >= 0) {
             System.arraycopy(arrData, index + 1, arrData, index, size - 1 - index);
         }
@@ -55,8 +60,6 @@ public class ArrayList implements List {
         return value;
     }
 
-
-
     @Override
     public Object get(int index) {
         if(index < 0 || index > size() - 1)
@@ -65,7 +68,7 @@ public class ArrayList implements List {
     }
 
     @Override
-    public Object set(Object value, int index) {
+    public Object set(E value, int index) {
         if(index < 0 || index > size() - 1)
             throw new IndexOutOfBoundsException(String.format("Index should be between 0 to %2d", size()));
         arrData[index] = value;
@@ -91,55 +94,83 @@ public class ArrayList implements List {
     }
 
     @Override
-    public boolean contains(Object value) {
-        boolean res = false;
-        for (Object d : arrData){
-            res = d.equals(value);
-        }
-        return res;
+    public boolean contains(E value) {
+        return indexOf(value) >= 0;
     }
 
     @Override
-    public int indexOf(Object value) {
-        int res = -1;
-        for (int i = 0; i < size(); i++){
+    public int indexOf(E value) {
+        for (int i = 0; i < size; i++){
             if(arrData[i].equals(value)){
-                res = i;
-                break;
+                return i;
             }
         }
-        return res;
+        return -1;
     }
 
     @Override
-    public int lastIndexOf(Object value) {
-        int res = -1;
+    public int lastIndexOf(E value) {
         for (int i = size() - 1; i >= 0; i--){
-            if(arrData[i].equals(value)) res = i;
+            if(arrData[i].equals(value)){
+                return i;
+            }
         }
-        return res;
+        return -1;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (Object d : arrData){
-            sb.append(d);
+        StringJoiner stringJoiner = new StringJoiner(",", "[","]");
+        for (Object data : arrData){
+            stringJoiner.add(data.toString());
         }
-        sb.append("]");
-        return sb.toString();
+        return stringJoiner.toString();
     }
 
 
     @VisibleForTesting
-    public boolean containsAll(ArrayList arrayList){
-        return Arrays.stream(arrData).allMatch(arrayList::contains);
+    public boolean containsAll(ArrayList<E> arrayList){
+        if (arrayList.size() != size){
+            return false;
+        }
+
+        if (arrayList.get(0) != arrData[0]){
+            return false;
+        }
+
+        int i = 1;
+        while (arrayList.iterator().hasNext()){
+            if(arrData[i] != arrayList.iterator().next()){
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    @Override
+    @Nonnull
+    public Iterator<E> iterator() {
+        return new Iterator<>() {
+
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size && arrData[currentIndex] != null;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public E next() {
+                return (E) arrData[currentIndex++];
+            }
+        };
     }
 
     private void checkIndex(int newIndex, int size) throws IndexOutOfBoundsException{
         if(newIndex < 0 || newIndex > size)
-            throw new IndexOutOfBoundsException("Illegal index: " + newIndex);
+            throw new IndexOutOfBoundsException("Illegal index: ");
     }
 
     private void trimToSize(){

@@ -39,23 +39,6 @@ public abstract class AbstractListTest {
     @Test
     @Description("test remove element by index to test content of result list")
     public void removeElementByIndexProperlyListContent(){
-
-        expected.add("String2");
-
-        int removeElementIndex = 5;
-
-        list.add("String1");
-        list.add("String2");
-        list.remove(removeElementIndex);
-
-        ArrayList<String> actual = (ArrayList<String>) list;
-        assertTrue(expected.size() == actual.size() && expected.containsAll(actual)
-                        && actual.containsAll(expected), "Element by index wasn't remove properly");
-    }
-
-    @Test
-    @Description("test remove element by index return removed element")
-    public void removeElementByIndex_returnRemovedElement(){
         ArrayList<String> expected = new ArrayList<>();
         expected.add("String2");
 
@@ -67,7 +50,7 @@ public abstract class AbstractListTest {
 
         ArrayList<String> actual = (ArrayList<String>) list;
         assertTrue(expected.size() == actual.size() && expected.containsAll(actual)
-                && actual.containsAll(expected), "Element by index wasn't remove properly");
+                        && actual.containsAll(expected), "Element by index wasn't remove properly");
     }
 /*
     // we can remove value by index between [0, size - 1]

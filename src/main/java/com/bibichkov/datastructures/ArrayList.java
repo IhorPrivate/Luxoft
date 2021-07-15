@@ -120,11 +120,12 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public String toString() {
-        StringJoiner stringJoiner = new StringJoiner(",", "[","]");
-        for (Object data : arrData){
-            stringJoiner.add(data.toString());
-        }
-        return stringJoiner.toString();
+//        StringJoiner stringJoiner = new StringJoiner(",", "[","]");
+//        for (Object data : arrData){
+//            stringJoiner.add(data.toString());
+//        }
+//        return stringJoiner.toString();
+        return "123";
     }
 
 
@@ -157,7 +158,7 @@ public class ArrayList<E> implements List<E> {
 
             @Override
             public boolean hasNext() {
-                return currentIndex < size && arrData[currentIndex] != null;
+                return currentIndex < size;
             }
 
             @Override

@@ -2,7 +2,7 @@ package datastructures;
 
 import com.bibichkov.datastructures.ArrayList;
 import com.bibichkov.datastructures.List;
-import jdk.jfr.Description;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +16,7 @@ public abstract class AbstractListTest {
 
 
     @Test
-    @Description("test add value to the end of the list")
+    @DisplayName("test add value to the end of the list")
     public void addValueToEndListTest(){
         String expected = "String1";
         int index = 5;
@@ -28,7 +28,7 @@ public abstract class AbstractListTest {
     }
 
     @Test
-    @Description("test add value to the end of the list with wrong index exception throws")
+    @DisplayName("test add value to the end of the list with wrong index exception throws")
     public void throwsIndexIndexOutOfBoundsExceptionWhenIndexWrongTest(){
         String stringToAdd = "String1";
         int index = 6;
@@ -37,10 +37,10 @@ public abstract class AbstractListTest {
     }
 
     @Test
-    @Description("test remove element by index to test content of result list")
+    @DisplayName("Remove element by index to test content of result list")
     public void removeElementByIndexProperlyListContent(){
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("String2");
+        expected.add("String1");
 
         int removeElementIndex = 5;
 
@@ -51,6 +51,12 @@ public abstract class AbstractListTest {
         ArrayList<String> actual = (ArrayList<String>) list;
         assertTrue(expected.size() == actual.size() && expected.containsAll(actual)
                         && actual.containsAll(expected), "Element by index wasn't remove properly");
+    }
+
+    @Test
+    @DisplayName("Remove element by index check new size and return removed element")
+    public void removeElementByIndexCheckNewSizeAndReturnRemovedElement(){
+
     }
 /*
     // we can remove value by index between [0, size - 1]
